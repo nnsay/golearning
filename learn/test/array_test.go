@@ -23,3 +23,20 @@ func TestArray(t *testing.T) {
 		t.Logf("index: %v, value: %v", idx, item)
 	}
 }
+
+func TestArrayEqual(t *testing.T) {
+	a := [2]int{5, 6}
+	b := [2]int{5, 6}
+
+	if a == b {
+		t.Log("1 equal")
+	} else {
+		t.Log("1 not equal")
+	}
+
+	// if a[:] == b[:] {
+	// 	t.Log("2 equal")
+	// } else {
+	// 	t.Log("2 not equal")
+	// }
+}

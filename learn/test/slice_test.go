@@ -4,7 +4,10 @@ import "testing"
 
 func TestSlice(t *testing.T) {
 	// 使用 make
+	var runes []rune
+	t.Logf("emtpy: %v", runes)
 	s1 := make([]int, 4, 4)
+	t.Logf("the s1: %v", s1)
 	s1 = append(s1, 4)
 	t.Log(s1, len(s1), cap(s1))
 
