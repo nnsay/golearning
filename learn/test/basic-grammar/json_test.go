@@ -8,8 +8,8 @@ import (
 type User struct {
 	Name    string
 	Age     int
-	Address Address `json:"home_address"`
-	Hobby   []string
+	Address Address  `json:"home_address"`
+	Hobby   []string `json:"hobbies"`
 }
 
 type Address struct {
@@ -33,5 +33,5 @@ func TestJsonBasic(t *testing.T) {
 	// unmarshal
 	var user2 = &User{}
 	json.Unmarshal(data, user2)
-	t.Logf("user: \n%#v", user2)
+	t.Logf("user: \n%#v", *user2)
 }

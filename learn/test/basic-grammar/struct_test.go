@@ -40,7 +40,29 @@ type Point struct {
 	X, y int
 }
 
+type Circle struct {
+	Center Point
+	Radius int
+}
+
+type Wheel struct {
+	Circle Circle
+	Spokes int
+}
+
 func TestExportAbility(t *testing.T) {
 	var p = Point{X: 1, y: 2}
 	t.Logf("p:%#v", p)
+
+	// anonymity member does not work
+	var w Wheel
+	w.Circle.Center.X = 8
+	w.Circle.Center.y = 9
+	w.Circle.Radius = 5
+	// w.X = 8
+	// w.y = 9
+	// w.Radius = 5
+	w.Spokes = 20
+	t.Logf("%#v", w)
+	t.Logf("%v", w)
 }
