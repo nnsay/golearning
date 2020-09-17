@@ -1,4 +1,4 @@
-package arrayt
+package golearning_test
 
 import (
 	"bufio"

@@ -1,4 +1,4 @@
-package arrayt
+package golearning_test
 
 import "testing"
 
@@ -28,4 +28,20 @@ func TestBasicUsage(t *testing.T) {
 	// 初始化声明
 	m2 := map[string]string{"name": "Jimmy", "city": "Beijing"}
 	t.Log("m2:", m2)
+}
+
+func TestLoopMap(t *testing.T) {
+	me := make(map[string]string)
+	me["weight"] = "75KG"
+	me["age"] = "30 years old"
+	me["name"] = "Jimmy Wang"
+
+	for key, value := range me {
+		t.Logf("%s: %s", key, value)
+	}
+}
+
+func TestDeclearAndSetValue(t *testing.T) {
+	m := map[string]string{"name": "Jimmy"}
+	t.Log(m)
 }
