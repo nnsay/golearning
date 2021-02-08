@@ -51,7 +51,9 @@ func (product Product) String() string {
 }
 
 func TestComplexSet(t *testing.T) {
+	// 结构体指针类型初始化: 没有使用&, go可以自动识别
 	products := []*Product{{"apple", 19.4}, {"orige", 0.27}, {"banana", 99}}
+	// products := []*Product{&Product{"apple", 19.4}, &Product{"orige", 0.27}, &Product{"banana", 99}}
 	t.Log(products, "\n")
 	for _, product := range products {
 		product.price += 0.50
