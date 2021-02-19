@@ -14,13 +14,13 @@ func ageToMonth(age int) int {
 func TestBasic(t *testing.T) {
 	// marshal
 	temstr := `{{.Name}}'s Work Report
-	Age: {{.Age | ageToMonth}}
-	Address: 
-		Provice: {{.Address.Province}}
-		City: {{.Address.City}}
-	All hobby:
-		{{range .Hobby}}{{.}} {{end}}
-	`
+  Age: {{.Age | ageToMonth}}
+  Address: 
+    Provice: {{.Address.Province}}
+    City: {{.Address.City}}
+  All hobby:
+    {{range .Hobby}}{{.}} {{end}}
+  `
 	user1 := User{
 		Name:    "Jimmy",
 		Age:     30,

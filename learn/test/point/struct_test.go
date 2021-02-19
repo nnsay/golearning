@@ -10,6 +10,10 @@ type composer struct {
 	birthYear int
 }
 
+func Test(t *testing.T) {
+	t.Log("hlelo")
+}
+
 func TestCreate(t *testing.T) {
 	c1 := composer{name: "c1name", birthYear: 10}
 	c11 := composer{"c1name", 10}
