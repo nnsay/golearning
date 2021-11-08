@@ -1,6 +1,10 @@
 package golearning_test
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+	"unsafe"
+)
 
 type Salary struct {
 	overtime float64
@@ -21,6 +25,46 @@ func (e *Employee) SetSalary(salary Salary) {
 func SetSalaryV2(e *Employee, basic float64) {
 	e.salary.basic = basic
 }
+
+func TestTwoType(t *testing.T) {
+	e := Employee{1, "jimmy", "Beijing", Salary{}}
+	e1 := Employee{ID: 1, Name: "jimmy1", Position: "Beijing", salary: Salary{}}
+	e2 := new(Employee)
+	e2.ID = 1
+	e2.Name = "jimmy2"
+	e2.Position = "Shanghai"
+	t.Log(e)
+	t.Log(e1)
+	t.Log(e2)
+	t.Log(e1.Position, e1.salary.basic)
+	t.Logf("e type: %T", e1) // 类型
+	t.Logf("e type: %T", e2) // 指针
+}
+
+// 使用结构体定义的方法, 属性地址不一样, 说明发生了复制
+// func (e Employee) String() string {
+// 	fmt.Printf("address: %x \n", unsafe.Pointer(&e.Position))
+// 	return fmt.Sprintf("ID:%d; Name:%s", e.ID, e.Name)
+// }
+
+// 使用指针定义的方法, 属性地址一样, 说明是引用传递
+func (e *Employee) String() string {
+	fmt.Printf("address: %x \n", unsafe.Pointer(&e.Position))
+	return fmt.Sprintf("ID:%d; Name:%s", e.ID, e.Name)
+}
+func TestTwoTypeFunc(t *testing.T) {
+	e := Employee{1, "jimmy", "Beijing", Salary{}}
+	// e := &Employee{1, "jimmy", "Beijing", Salary{}}
+	// e := new(Employee)
+	// e.Position = "Beijing"
+	fmt.Printf("address: %x \n", unsafe.Pointer(&e.Position))
+	t.Log(e.String())
+	// 总结:
+	// 1. new(Employee), Employee, &Employee 三个方式在调用和对象使用上一致, 也说明三个方式的产生的对象都是一样即都是指针
+	// 2. 使用结构体定义的方法会发生值复制传递, 而指针类型不会
+	// 3. 推荐使用指针定义方法
+}
+
 func TestStructBasic(t *testing.T) {
 	var e Employee
 	t.Logf("e is %#v", e)
