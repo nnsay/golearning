@@ -1,0 +1,53 @@
+package advancegrammar_test
+
+import (
+	"fmt"
+	"testing"
+	"time"
+)
+
+func service() string {
+	time.Sleep(time.Millisecond * 500)
+	return "sevice done"
+}
+
+func asyncService() chan string {
+	// 声明 chan/map/set
+	ch := make(chan string)
+
+	go func() {
+		ret := service()
+		fmt.Println("return the service")
+		ch <- ret
+		fmt.Println("service exited")
+	}()
+
+	return ch
+}
+
+// select控制超时
+func TestSelect(t *testing.T) {
+	select {
+	case result := <-asyncService():
+		t.Logf("success result: %s\n", result)
+	case <-time.After(time.Millisecond * 400):
+		t.Errorf("timeout error\n")
+		// default:
+		// 	t.Logf("default error")
+	}
+}
+
+// https://gobyexample.com/non-blocking-channel-operations
+// 这个文章说select是阻塞, 但是通过加default可以变成非阻塞, 刚才也有同学说close通道后<-chan就是非阻塞了, 所以大概理论也许是:
+// 1. 不关闭chan时, select在其阻塞逻辑块中得知通道正常, 只是没有可用的消息, 所选择走default, 所以通道标记为没有关闭;
+// 2. 关闭chan时, select在其阻塞逻辑块中得知通道关闭,<-chan非阻塞, 此时case直接优先命中, 所以走了case的逻辑, 即此时通道标记关闭
+func TestSelectCancel(t *testing.T) {
+	ch := make(chan int)
+	close(ch)
+	select {
+	case <-ch:
+		t.Logf("close")
+	default:
+		t.Logf("no close")
+	}
+}
