@@ -50,4 +50,34 @@ func TestSelectCancel(t *testing.T) {
 	default:
 		t.Logf("no close")
 	}
+	t.Logf("done")
+}
+
+// 3. select是阻塞块, select块没有完成其下逻辑也就不能完成
+func TestSelectBlock(t *testing.T) {
+	ch := make(chan int)
+	// close(ch)
+	select {
+	case <-ch:
+		t.Logf("close")
+	case <-ch:
+		t.Logf("close")
+		// default:
+		// 	t.Logf("no close")
+	}
+	t.Logf("done")
+}
+
+// 1. push chan是一个阻塞操作
+// 2. pop chan是一个阻塞操作
+// 3. 以 go 声明的协程方法是非阻塞编程
+func TestNilChan(t *testing.T) {
+	c := make(chan int)
+	go func() {
+		c <- 1
+	}()
+	t.Log("make chan done")
+	result := <-c
+	t.Log("wait the chan value")
+	t.Logf("result: %d", result)
 }
