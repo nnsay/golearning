@@ -37,7 +37,7 @@ func TestGoroutineLock(t *testing.T) {
 func TestGoroutineThreadSafe(t *testing.T) {
 	var mut sync.Mutex
 	counter := 0
-	for i := 0; i < 1; i++ {
+	for i := 0; i < 5000; i++ {
 		go func() {
 			defer func() {
 				mut.Unlock()

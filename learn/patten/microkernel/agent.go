@@ -95,6 +95,7 @@ func (agt *Agent) startCollectors() error {
 	var errs CollectorError
 
 	for name, collector := range agt.collectors {
+		fmt.Printf("%s collector start trriger\n", name)
 		go func(name string, collector Collector, ctx context.Context) {
 			defer func() {
 				mux.Unlock()

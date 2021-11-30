@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math/rand"
 	"testing"
 	"time"
 )
@@ -60,8 +61,12 @@ func NewCollect(name string, content string) *DemoCollector {
 	}
 }
 
+func TestRand(t *testing.T) {
+	t.Log(rand.Intn(10))
+}
+
 func TestAgent(t *testing.T) {
-	agt := NewAgent(100)
+	agt := NewAgent(10)
 	c1 := NewCollect("c1", "1")
 	c2 := NewCollect("c2", "2")
 	agt.RegistCollector("c1", c1)
@@ -70,7 +75,7 @@ func TestAgent(t *testing.T) {
 		fmt.Printf("start error %v\n", err)
 	}
 	fmt.Println(agt.Start())
-	time.Sleep(time.Second * 1)
+	time.Sleep(time.Second * 10)
 	agt.Stop()
 	agt.Destory()
 }
