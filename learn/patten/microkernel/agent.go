@@ -173,6 +173,7 @@ func (agt *Agent) Destory() error {
 	return agt.destoryCollectors()
 }
 
+// agent 也是 EventReceiver类型
 func (agt *Agent) OnEvent(evt Event) {
 	agt.evtBuf <- evt
 }

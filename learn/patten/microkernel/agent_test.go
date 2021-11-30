@@ -9,19 +9,21 @@ import (
 )
 
 type DemoCollector struct {
+	// 这里receiver其实是agent, agent实现了OnEvent方法也是EventReceiver类型, 通过EventReceiver解耦
 	evtReceiver EventReceiver
-	agtCtx      context.Context
 	stopChan    chan struct{}
 	name        string
 	content     string
 }
 
 func (c *DemoCollector) Init(e EventReceiver) error {
+	fmt.Println("initialize collector", c.name)
 	c.evtReceiver = e
 	return nil
 }
 
 func (c *DemoCollector) Start(agtCtx context.Context) error {
+	fmt.Println("start collector", c.name)
 	// 模拟每50毫秒发送一次
 	for {
 		select {
