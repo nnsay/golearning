@@ -2,3 +2,4 @@
 cpu.profile
 cpuprofile
 memprofile
+*.out
