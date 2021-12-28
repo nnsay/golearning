@@ -2,6 +2,7 @@ package advancegrammar_test
 
 import (
 	"fmt"
+	"os"
 	"testing"
 	"time"
 )
@@ -80,4 +81,50 @@ func TestNilChan(t *testing.T) {
 	result := <-c
 	t.Log("wait the chan value")
 	t.Logf("result: %d", result)
+}
+
+func abortLaunch() {
+	abort := make(chan struct{})
+	go func() {
+		os.Stdin.Read(make([]byte, 1))
+		abort <- struct{}{}
+	}()
+}
+
+func launch() {
+	fmt.Printf("Commencing coundown\n")
+	tick := time.Tick(1 * time.Second)
+	for counterdown := 10; counterdown > 0; counterdown-- {
+		fmt.Printf("%d\n", counterdown)
+		<-tick
+	}
+}
+func TestLaunch(t *testing.T) {
+	launch()
+	t.Logf("launch...\n")
+}
+
+func TestAbortLaunch(t *testing.T) {
+	fmt.Printf("Commencing coundown\n")
+	tick := time.NewTicker(1 * time.Second)
+	abort := make(chan struct{})
+
+	// 使用协程监控标准输入
+	// go func() {
+	// 	os.Stdin.Read(make([]byte, 1))
+	// 	abort <- struct{}{}
+	// }()
+
+	for counterdown := 10; counterdown > 0; counterdown-- {
+		fmt.Printf("%d\n", counterdown)
+		select {
+		case <-tick.C:
+			// return
+		case <-abort:
+			fmt.Println("Launch aborted!")
+			return
+		}
+	}
+	tick.Stop()
+	t.Logf("launch...\n")
 }
