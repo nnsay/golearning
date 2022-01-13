@@ -2,7 +2,9 @@ package advancegrammar_test
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
+	"sync"
 	"testing"
 	"time"
 )
@@ -56,17 +58,20 @@ func TestSelectCancel(t *testing.T) {
 
 // 3. select是阻塞块, select块没有完成其下逻辑也就不能完成
 func TestSelectBlock(t *testing.T) {
-	ch := make(chan int)
+	ch := make(chan int, 1)
+	t.Logf("1\n")
+	ch <- 1
+	t.Logf("2\n")
 	// close(ch)
 	select {
 	case <-ch:
-		t.Logf("close")
-	case <-ch:
-		t.Logf("close")
+		t.Logf("done\n")
+	case <-time.After(time.Second * 1):
+		t.Logf("timeout\n")
 		// default:
 		// 	t.Logf("no close")
 	}
-	t.Logf("done")
+	t.Logf("done\n")
 }
 
 // 1. push chan是一个阻塞操作
@@ -127,4 +132,36 @@ func TestAbortLaunch(t *testing.T) {
 	}
 	tick.Stop()
 	t.Logf("launch...\n")
+}
+
+func TestNilChan2(t *testing.T) {
+	var wg sync.WaitGroup
+
+	add := func(c chan int) {
+		sum := 0
+		t := time.NewTimer(time.Second)
+
+		for {
+			select {
+			case input := <-c:
+				sum = sum + input
+			case <-t.C:
+				c = nil
+				fmt.Println(sum)
+				wg.Done()
+			}
+		}
+	}
+	send := func(c chan int) {
+		for {
+			c <- rand.Intn(10)
+		}
+	}
+
+	c := make(chan int)
+	rand.Seed(time.Now().Unix())
+	wg.Add(1)
+	go add(c)
+	go send(c)
+	wg.Wait()
 }
