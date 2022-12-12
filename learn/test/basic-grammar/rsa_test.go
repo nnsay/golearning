@@ -11,13 +11,64 @@ import (
 	"testing"
 )
 
+func RSAGenKey(bits int) error {
+	/*
+		生成私钥
+	*/
+	//1、使用RSA中的GenerateKey方法生成私钥
+	privateKey, err := rsa.GenerateKey(rand.Reader, bits)
+	if err != nil {
+		return err
+	}
+	//2、通过X509标准将得到的RAS私钥序列化为：ASN.1 的DER编码字符串
+	privateStream := x509.MarshalPKCS1PrivateKey(privateKey)
+	//3、将私钥字符串设置到pem格式块中
+	block1 := pem.Block{
+		Type:  "RSA PRIVATE KEY",
+		Bytes: privateStream,
+	}
+	//4、通过pem将设置的数据进行编码，并写入磁盘文件
+	fPrivate, err := os.Create("privateKey.pem")
+	if err != nil {
+		return err
+	}
+	defer fPrivate.Close()
+	err = pem.Encode(fPrivate, &block1)
+	if err != nil {
+		return err
+	}
+
+	/*
+		生成公钥
+	*/
+	publicKey := privateKey.PublicKey
+	publicStream, err := x509.MarshalPKIXPublicKey(&publicKey)
+	//publicStream:=x509.MarshalPKCS1PublicKey(&publicKey)
+	block2 := pem.Block{
+		Type:  "PUBLIC KEY",
+		Bytes: publicStream,
+	}
+	fPublic, err := os.Create("publicKey.pem")
+	if err != nil {
+		return err
+	}
+	defer fPublic.Close()
+	pem.Encode(fPublic, &block2)
+	return nil
+}
+func TestGenerateKey(t *testing.T) {
+	RSAGenKey(1024)
+}
+
 func TestRSA(t *testing.T) {
-	RSAPublicBytes := RSAReadKeyFromFile("/home/nguser/github/ngrepos/go-ldap-admin/go-ldap-admin-priv.pem")
-	RSAPrivateBytes := RSAReadKeyFromFile("/home/nguser/github/ngrepos/go-ldap-admin/go-ldap-admin-pub.pem")
+	// RSAPublicBytes := RSAReadKeyFromFile("/Users/wangjian/Workspace/github/go-ldap-admin/go-ldap-admin-pub.pem")
+	// RSAPrivateBytes := RSAReadKeyFromFile("/Users/wangjian/Workspace/github/go-ldap-admin/go-ldap-admin-priv.pem")
+	RSAPublicBytes := RSAReadKeyFromFile("/Users/wangjian/Workspace/practice/golearning/learn/test/basic-grammar/publicKey.pem")
+	RSAPrivateBytes := RSAReadKeyFromFile("/Users/wangjian/Workspace/practice/golearning/learn/test/basic-grammar/privateKey.pem")
 	pass, _ := RSAEncrypt([]byte("123456"), RSAPublicBytes)
 	hashPass := string(pass)
 	plainPass, err := RSADecrypt([]byte(hashPass), RSAPrivateBytes)
-	t.Logf("%#v", plainPass)
+	t.Logf("%#v", string(plainPass))
 	t.Logf("%#v", err)
 }
 func RSAReadKeyFromFile(filename string) []byte {

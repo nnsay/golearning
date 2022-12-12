@@ -6,6 +6,7 @@ import (
 )
 
 // 二分查找: 每次取中间值和目标数字比较, 如果相等则位置在中间值, 否则继续向前/后取中间值, 如果边界重合还未找到则不存在与数组
+// 注意: mid=(high+low)/2
 
 func binarySearch(arr []int, num int) int {
 	idx := -1
