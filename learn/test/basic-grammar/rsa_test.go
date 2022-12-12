@@ -61,10 +61,10 @@ func TestGenerateKey(t *testing.T) {
 }
 
 func TestRSA(t *testing.T) {
-	// RSAPublicBytes := RSAReadKeyFromFile("/Users/wangjian/Workspace/github/go-ldap-admin/go-ldap-admin-pub.pem")
-	// RSAPrivateBytes := RSAReadKeyFromFile("/Users/wangjian/Workspace/github/go-ldap-admin/go-ldap-admin-priv.pem")
-	RSAPublicBytes := RSAReadKeyFromFile("/Users/wangjian/Workspace/practice/golearning/learn/test/basic-grammar/publicKey.pem")
-	RSAPrivateBytes := RSAReadKeyFromFile("/Users/wangjian/Workspace/practice/golearning/learn/test/basic-grammar/privateKey.pem")
+	RSAPublicBytes := RSAReadKeyFromFile("/home/nguser/github/ngrepos/ngiq-sso-deploy/asset/go-ldap-admin-server-pub.pem")
+	RSAPrivateBytes := RSAReadKeyFromFile("/home/nguser/github/ngrepos/ngiq-sso-deploy/asset/go-ldap-admin-server-priv.pem")
+	// RSAPublicBytes := RSAReadKeyFromFile("/Users/wangjian/Workspace/practice/golearning/learn/test/basic-grammar/publicKey.pem")
+	// RSAPrivateBytes := RSAReadKeyFromFile("/Users/wangjian/Workspace/practice/golearning/learn/test/basic-grammar/privateKey.pem")
 	pass, _ := RSAEncrypt([]byte("123456"), RSAPublicBytes)
 	hashPass := string(pass)
 	plainPass, err := RSADecrypt([]byte(hashPass), RSAPrivateBytes)
