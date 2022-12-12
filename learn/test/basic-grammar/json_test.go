@@ -67,3 +67,10 @@ func TestSlice2(t *testing.T) {
 	t.Logf("cap: %d", cap(ss))
 	t.Logf("point: %p", ss)
 }
+
+func TestStringtoMap(t *testing.T) {
+	str:=`{"remark": "name", "groupName": "department_id", "sourceDeptId": "open_department_id", "sourceDeptParentId": "open_department_id"}`
+	m:= make(map[string]string)
+	json.Unmarshal([]byte(str), &m)
+	t.Logf("%#v", m)
+}
