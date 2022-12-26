@@ -60,6 +60,14 @@ func TestGenerateKey(t *testing.T) {
 	RSAGenKey(1024)
 }
 
+func TestRASDecrypt(t *testing.T) {
+	pass := "kDQh6tPteVJUeqoXtA+KQLVDuYa/G3UPDRqGNa/wdE8WHQXLXhTGLhM09n4SLih2i9qlTi1+LDvfybxo7FdUbGUaRJN/SDwv9LxkLUnzVWiXubrdySxaWCSkkN7IEMzOed50xIKERA1ipmsS4uzWLw4TKmhbgK2mdu3meLeOrSU="
+	RSAPrivateBytes := RSAReadKeyFromFile("/home/nguser/github/ngrepos/ngiq-sso-deploy/asset/go-ldap-admin-server-priv.pem")
+	res, err := RSADecrypt([]byte(pass), RSAPrivateBytes)
+	fmt.Println(string(res))
+	fmt.Println(err)
+}
+
 func TestRSA(t *testing.T) {
 	RSAPublicBytes := RSAReadKeyFromFile("/home/nguser/github/ngrepos/ngiq-sso-deploy/asset/go-ldap-admin-server-pub.pem")
 	RSAPrivateBytes := RSAReadKeyFromFile("/home/nguser/github/ngrepos/ngiq-sso-deploy/asset/go-ldap-admin-server-priv.pem")
