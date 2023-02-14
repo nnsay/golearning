@@ -26,7 +26,7 @@ import (
 /** syncPool使用场景
 1.通过复用降低复杂对象的创建和GC代价
 2.协程安全,会有锁开销
-3.声明周期守GC影响, 不适合做连接池,需要自己管理生命周期的资源池优化
+3.声明周期受GC影响, 不适合做连接池,需要自己管理生命周期的资源池优化
 */
 
 func TestSyncPool(t *testing.T) {
@@ -39,7 +39,7 @@ func TestSyncPool(t *testing.T) {
 	v := pool.Get().(int)
 	t.Logf("get value: %v", v)
 	age := 32
-	pool.Put(&age)
+	pool.Put(age)
 	// 测试GC情况sync.Pool对象
 	runtime.GC()
 	v1 := pool.Get().(int)
@@ -62,6 +62,7 @@ func TestSyncGroupPool(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		wg.Add(1)
 		go func() {
+			defer wg.Done()
 			v := pool.Get().(int)
 			t.Logf("get value: %v", v)
 		}()

@@ -110,3 +110,20 @@ func TestMockSetWithMap(t *testing.T) {
 	sort.Ints(keys)
 	t.Logf("value: %#v", keys)
 }
+
+// 值传递(传递的是header)
+// 在go的map实现中，它的底层结构体是hmap，hmap里维护着若干个bucket数组 (即桶数组)。
+// Bucket数组中每个元素都是bmap结构，也即每个bucket（桶）都是bmap结构，每个桶中保存了8个kv对，如果8个满了，又来了一个key落在了这个桶里，会使用overflow连接下一个桶(溢出桶)。
+func TestMapValuePass(t *testing.T) {
+	a := map[int]bool{1: true, 2: false}
+	aa := changeMap(a)
+	t.Logf("origin map: %v\n", a)
+	t.Logf("change map: %v\n", aa)
+}
+
+func changeMap(o map[int]bool) map[int]bool {
+	for k, v := range o {
+		o[k] = !v
+	}
+	return o
+}

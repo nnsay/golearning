@@ -15,7 +15,7 @@ type Secret struct {
 func TestRWMutext(t *testing.T) {
 	var Password *Secret
 	var wg sync.WaitGroup
-	Password = &Secret{}
+	Password = &Secret{password: "abc"}
 
 	change := func(pass string) {
 		defer wg.Done()
@@ -33,7 +33,8 @@ func TestRWMutext(t *testing.T) {
 		fmt.Println(name, "show() function locked!")
 		time.Sleep(2 * time.Second)
 		fmt.Println(name, "show() pass value:", Password.password)
-		defer Password.RWM.RUnlock()
+		Password.RWM.RUnlock()
+		fmt.Println(name, "show() function unlocked!")
 	}
 	wg.Add(1)
 	go show("1")

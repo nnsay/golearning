@@ -53,7 +53,7 @@ func (e *Employee) UpdateAge(age int) {
 func TestInvokeByName(t *testing.T) {
 	e := &Employee{"1234", "jimmy wang", 33}
 	// 使用Name获取属性: FieldByName不能用指针, 需要对象值
-	// t.Logf("Name: value(%[1]v), type(%[1]T)", reflect.ValueOf(*e).FieldByName("Name"))
+	t.Logf("Name: value(%[1]v), type(%[1]T)", reflect.ValueOf(*e).FieldByName("Name"))
 	t.Logf("Name: value(%[1]v), type(%[1]T)", reflect.ValueOf(e).Elem().FieldByName("Name"))
 	// 获取属性类型
 	// nameType, ok := reflect.TypeOf(*e).FieldByName("Name")

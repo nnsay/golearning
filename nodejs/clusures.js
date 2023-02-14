@@ -14,3 +14,15 @@ const c1 = generateAdd();
 const c2 = generateAdd();
 console.log(c1(1));
 console.log(c2(3));
+
+
+function genIntroduce(name) {
+  let tmp = `你好, 我是${name}.`;
+  function doIntroduce(otherInfo) {
+    tmp += `\n${otherInfo}`;
+    return tmp;
+  }
+  return doIntroduce;
+}
+const r = genIntroduce("光音");
+console.log(r("很高兴认识你!"));

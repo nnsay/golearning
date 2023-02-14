@@ -1,6 +1,8 @@
 package golearning_test
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestArray(t *testing.T) {
 	// 先声明, 后赋值
@@ -39,4 +41,19 @@ func TestArrayEqual(t *testing.T) {
 	// } else {
 	// 	t.Log("2 not equal")
 	// }
+}
+
+// 数组是值传递
+func TestValuePass(t *testing.T) {
+	a := [2]int{5, 6}
+	aa := changeArray(a) // 值传递, 不影响原始数组
+	t.Logf("origin array: %v\n", a)
+	t.Logf("change array: %v\n", aa)
+}
+
+func changeArray(arr [2]int) [2]int {
+	for i := 0; i < len(arr); i++ {
+		arr[i] *= 2
+	}
+	return arr
 }
