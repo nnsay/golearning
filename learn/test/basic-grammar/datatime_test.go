@@ -18,6 +18,30 @@ func TestTime(t *testing.T) {
 	t.Logf("0zone  timezone format: %s\n", t1.In(time.FixedZone("0zone", 0)).Format("2006-01-02 15:04:05"))
 }
 
+func TestStringTimezone(t *testing.T) {
+
+	timeLocation := "America/New_York"
+	timeLocation = "Local"
+	loc, err := time.LoadLocation(timeLocation)
+	if err != nil {
+		panic(err)
+	}
+	time.Local = loc
+	now := time.Now()
+	t.Log(now.Format("2006-01-02 15:04:05"))
+}
+
+func TestLocationTimezone(t *testing.T) {
+	timeLocation := time.FixedZone("8zone", 8*60*60)
+	time.Local = timeLocation
+	now := time.Now()
+	t.Log(now.Format("2006-01-02 15:04:05"))
+}
+
+func TestTimeDuration(t *testing.T) {
+	t.Logf("%#v\n", time.Hour.Seconds()*8)
+}
+
 func TestDurition(t *testing.T) {
 	hour := time.Hour.Seconds()
 	t.Logf("1 hour seconds: %d", int(hour))
