@@ -33,9 +33,11 @@ func TestStringTimezone(t *testing.T) {
 
 func TestLocationTimezone(t *testing.T) {
 	timeLocation := time.FixedZone("8zone", 8*60*60)
+	shanghaiLocation, _ := time.LoadLocation("Asia/Shanghai")
 	time.Local = timeLocation
 	now := time.Now()
 	t.Log(now.Format("2006-01-02 15:04:05"))
+	t.Log(now.In(shanghaiLocation).Format("2006-01-02 15:04:05"))
 }
 
 func TestTimeDuration(t *testing.T) {
